@@ -100,4 +100,18 @@ exports.uploadPhotos = asyncHandler(async(req, res, next)=>{
     });
 });
 
+// @desc upload content images
+// @route POST /api/v1/projects/:projectId/content
+// @Access Public
+exports.uploadContent = asyncHandler(async(req, res, next)=>{
 
+    const project = await Projects.findById(req.params.id);
+
+    if(!project){
+        return next(new ErrorResponse(`The project with the ID of ${req.params.id} has not been found`, 404));
+    }
+    
+    const image = req.files.file;
+    const image_name = req.body.name;
+   
+});
