@@ -1,4 +1,5 @@
 const Projects = require('../models/projects');
+const path = require('path')
 const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 
@@ -20,7 +21,7 @@ exports.getSingleProject = asyncHandler(async(req, res, next)=>{
 
     if(!project){
 
-        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`), 404)
+        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`,404))
     }
 
     res.status(200).json({success: true, data:project});
@@ -47,7 +48,7 @@ exports.deleteProject = asyncHandler(async(req, res, next)=>{
     const project = await Projects.findById(req.params.id);
 
     if(!project){
-        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`),404)
+        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`,404))
     }
 
     await project.remove();
@@ -59,11 +60,44 @@ exports.deleteProject = asyncHandler(async(req, res, next)=>{
 // @route POST /api/v1/projects
 // @Access Public
 exports.createProject = asyncHandler(async(req, res, next)=>{
-    
-    const result = await Projects.create(req.body);
-    console.log('line 64: ', result)
 
-    // res.status(200).json({success: true, data:result})
+    const result = await Projects.create(req.body);
+
+    res.status(201).json({success: true, data:result})
+});
+
+// @desc Upload photos
+// @route POST /api/v1/projects/:projectId
+// @Access Public
+exports.uploadPhotos = asyncHandler(async(req, res, next)=>{
+   
+    const project = await Projects.findById(req.params.id);
+
+    if(!project){
+        return next(new ErrorResponse(`The project with the ID of ${req.params.id} has not been found`, 404))
+    }
+
+    const image = req.files.file;
+
+    if(!image.mimetype.startsWith('image')){
+
+        return next(new ErrorResponse(`Please upload and image file`,400));
+    }
+
+    //Create custom file name
+    image.name = `photo_${project._id}${path.parse(image.name).ext}`;
+
+    image.mv(`./public/uploads/${image.name}`, async err =>{
+
+        if(err){
+            console.log(err)
+            return next(new ErrorResponse(`Problem with file upload`,500));
+        }
+
+        await Projects.findByIdAndUpdate(req.params.id,{main_image:image.name});
+
+        res.status(200).json({success:true, data:image.name});
+    });
 });
 
 
