@@ -1,1 +1,3 @@
 DB is not connected. Get DB to connect for both the project and seeder file.
+
+Issue fixed had to change localhost to 127.0.0.1
