@@ -1,10 +1,7 @@
 const Projects = require('../models/projects');
+const ErrorResponse = require('../utils/errorResponse');
 const asyncHandler = require('../middleware/asyncHandler');
 
-const data= {
-    name:'alex',
-    age: 12
-}
 // @desc Get all Projects
 // @route Get /api/v1/projects
 // @Access Public
@@ -21,6 +18,11 @@ exports.getSingleProject = asyncHandler(async(req, res, next)=>{
 
     const project = await Projects.findOne({_id:req.params.id})
 
+    if(!project){
+
+        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`), 404)
+    }
+
     res.status(200).json({success: true, data:project});
 });
 
@@ -33,7 +35,7 @@ exports.updateProject = asyncHandler(async(req, res, next)=>{
         new:true,
         runValidators: true
     });
-    console.log('line 36: ', updateProject);
+
     res.status(200).json({success: true, data:updateProject});
 });
 
@@ -44,7 +46,24 @@ exports.deleteProject = asyncHandler(async(req, res, next)=>{
 
     const project = await Projects.findById(req.params.id);
 
+    if(!project){
+        return next(new ErrorResponse(`No projects with the id of ${req.params.id}`),404)
+    }
+
     await project.remove();
 
     res.status(200).json({success: true, data:{}});
 });
+
+// @desc Create a project
+// @route POST /api/v1/projects
+// @Access Public
+exports.createProject = asyncHandler(async(req, res, next)=>{
+    
+    const result = await Projects.create(req.body);
+    console.log('line 64: ', result)
+
+    // res.status(200).json({success: true, data:result})
+});
+
+
