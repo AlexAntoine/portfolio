@@ -2,6 +2,7 @@ require('dotenv').config({path:'./config/.env'});
 const mongoose = require('mongoose');
 const errorHandler = require('./middleware/error')
 const express = require('express');
+const fileUpload = require('express-fileupload')
 const {localDB} = require('./db/mongoose');
 const colors = require('colors');
 const path = require('path');
@@ -9,7 +10,9 @@ const path = require('path');
 mongoose.set('strictQuery', true)
 
 const app = express();
+
 app.use(express.json());
+app.use(fileUpload());
 
 localDB();
 
