@@ -4,7 +4,10 @@ const mongoose = require('mongoose');
 const {localDB} = require('./db/mongoose');
 const Project = require('./models/projects');
 
+mongoose.set('strictQuery', true)
+
 localDB();
+
 
 const projects = JSON.parse(fs.readFileSync(`${__dirname}/_data/projects.json`, 'utf-8'));
 
@@ -40,7 +43,7 @@ if(process.argv[2]=== '-i'){
 
     importData();
 
-}else if(process.argv[2]=== 'd'){
+}else if(process.argv[2]=== '-d'){
 
     deleteData();
 }
