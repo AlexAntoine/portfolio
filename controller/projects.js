@@ -110,8 +110,27 @@ exports.uploadContent = asyncHandler(async(req, res, next)=>{
     if(!project){
         return next(new ErrorResponse(`The project with the ID of ${req.params.id} has not been found`, 404));
     }
-    
-    const image = req.files.file;
-    const image_name = req.body.name;
+
+    const contentImage = req.files.file;
+    const imageName = req.body.name;
+
+    if(!contentImage.mimetype.startsWith('image')){
+
+        return next(new ErrorResponse(`Please upload and image file`,400));
+    }
+
+    contentImage.mv(`./public/uploads/${contentImage.name}`, async err =>{
+
+        if(err){
+            console.log(err)
+            return next(new ErrorResponse(`Problem with file upload`,500));
+        }
+
+        const result = await Projects.findByIdAndUpdate(req.params.id,{$push:{"images":{name:imageName, image:contentImage.toString()}}}, {upsert:true,new:true});
+
+        res.status(200).json({success:true, data: result});
+    });
+
+
    
 });
