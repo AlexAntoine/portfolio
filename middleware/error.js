@@ -6,12 +6,12 @@ const errorHandler = (error, req, res, next)=>{
      err.message = error.message;
     //  console.log('line 7: ', error.name)
  
-    if(error.name === 'CastError'){
-        const message = `Resource not found with id of ${error.value}`;
+    // if(error.name === 'CastError'){
+    //     const message = `Resource not found with id of ${error.value}`;
        
-        err = new ErrorResponse(message, 404)
+    //     err = new ErrorResponse(message, 404)
 
-    }
+    // }
 
     // if(err.code === 11000){
     //     const message = 'Duplicate field value entered';

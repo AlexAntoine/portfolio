@@ -5,3 +5,5 @@ Issue fixed had to change localhost to 127.0.0.1
 Working on uploading images for each project.
 
 I think I added the image upload feature but I don't think it will render when called. I will have to figure that out later.
+
+working on integrating multer into this project

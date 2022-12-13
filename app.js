@@ -12,7 +12,7 @@ mongoose.set('strictQuery', true)
 const app = express();
 
 app.use(express.json());
-app.use(fileUpload());
+// app.use(fileUpload());
 
 localDB();
 
@@ -24,6 +24,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/api/v1/projects', projectsRouter);
 
-app.use(errorHandler)
+app.use(errorHandler);
 
 module.exports = app;

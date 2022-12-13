@@ -45,10 +45,8 @@ const projectSchema = new mongoose.Schema({
             type: String
         },
 
-        image:{
-            type: Buffer
-        }
-    }]
+        image:Buffer
+    }],
 });
 
 const Project = mongoose.model('Projects', projectSchema);
