@@ -46,8 +46,7 @@ const projectSchema = new mongoose.Schema({
         },
 
         image:{
-            type: String,
-            default: 'no-photo.jpg'
+            type: Buffer
         }
     }]
 });
