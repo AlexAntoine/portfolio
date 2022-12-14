@@ -131,9 +131,3 @@ exports.uploadContent = asyncHandler(async(req, res, next)=>{
         res.status(200).json({success:true, data: result});
     });
 });
-
-
-exports.uploadImages = asyncHandler(async(req, res, next)=>{
-
-    res.send('Hello world, dumbass')
-});
